@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 const DEFAULT = {
     percentaje: '[X]',
-    titleText : 'De los productos forestales que adquirimos tienen certificación FSC',
+    titleText : 'Felicidades a ',
     bodyText  : 'Felicidades a la ciudad por ser una Ciudad Árbol del Mundo',
     city      : '',
     background: null,

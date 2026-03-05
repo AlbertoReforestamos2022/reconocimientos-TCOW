@@ -19,7 +19,7 @@ export default function Editor() {
     <div style={styles.root}>
       {/* Navbar */}
       <header style={styles.navbar}>
-        <span style={styles.brand}> Branding Editor</span>
+        <span style={styles.brand}> Reconocimiento - Tree Cities of the world </span>
         <div style={styles.navRight}>
           {user?.role === 'admin' && (
             <button className="btn btn-secondary btn-sm"

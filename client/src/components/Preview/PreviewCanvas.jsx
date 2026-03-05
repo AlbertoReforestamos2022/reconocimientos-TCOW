@@ -1,5 +1,5 @@
 import { useEditorStore } from '../../store/editorStore'
-import './preview.css'
+import './Preview.css'
 
 const LOGO_POSITIONS = {
   'top-left':     { top: 20,  left: 20,    bottom: 'auto', right: 'auto' },
