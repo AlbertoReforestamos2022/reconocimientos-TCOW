@@ -42,39 +42,86 @@ router.put('/users/:id/role', async (req, res) => {
   }
 
   try {
+    // Obtener el rol actual del usuario
+    const [userRows] = await pool.query('SELECT role FROM users WHERE id = ?', [id])
+    if (userRows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+    const currentRole = userRows[0].role
+
+    if (currentRole === 'admin' && role === 'user') {
+      // Contar cuántos admins hay
+      const [adminCountRows] = await pool.query('SELECT COUNT(*) as count FROM users WHERE role = "admin"')
+      const adminCount = adminCountRows[0].count
+      if (adminCount <= 1) {
+        return res.status(400).json({ error: 'No se puede quitar el rol de administrador al último administrador' })
+      }
+    }
+
+    if (currentRole === 'user' && role === 'admin') {
+      // Contar cuántos admins hay
+      const [adminCountRows] = await pool.query('SELECT COUNT(*) as count FROM users WHERE role = "admin"')
+      const adminCount = adminCountRows[0].count
+      if (adminCount >= 1) {
+        return res.status(400).json({ error: 'Solo puede haber un administrador en el sistema' })
+      }
+    }
+
     const [result] = await pool.query(
       'UPDATE users SET role = ? WHERE id = ?', [role, id]
     )
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' })
     }
-    res.json({ message: `Rol actualizado a "${role}"` })
-  } catch (err) {
-    console.error('Error al actualizar rol:', err)
-    res.status(500).json({ error: 'Error al actualizar rol' })
+
+    // Success response (assuming you want to confirm the update)
+    res.json({ message: 'Rol actualizado exitosamente' })
+  } catch (error) {
+    console.error('Error updating user role:', error)
+    res.status(500).json({ error: 'Error interno del servidor' })
   }
 })
 
 // ─── DELETE /api/admin/users/:id ─────────────────────────────────────────────
-router.delete('/users/:id', async (req, res) => {
-  const { id } = req.params
+// router.delete('/users/:id', async (req, res) => {
+//   const { id } = req.params
 
-  if (Number(id) === req.user.id) {
-    return res.status(400).json({ error: 'No puedes eliminar tu propia cuenta' })
-  }
+//   if (Number(id) === req.user.id) {
+//     return res.status(400).json({ error: 'No puedes eliminar tu propia cuenta' })
+//   }
 
-  try {
-    const [result] = await pool.query(
-      'DELETE FROM users WHERE id = ?', [id]
-    )
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado' })
-    }
-    res.json({ message: 'Usuario eliminado' })
-  } catch (err) {
-    console.error('Error al eliminar usuario:', err)
-    res.status(500).json({ error: 'Error al eliminar usuario' })
-  }
-})
+//   try {
+//     // Obtener el rol del usuario a eliminar
+//     const [userRows] = await pool.query('SELECT role FROM users WHERE id = ?', [id])
+//     if (userRows.length === 0) {
+//       return res.status(404).json({ error: 'Usuario no encontrado' })
+//     }
+//     const userRole = userRows[0].role
+
+//     if (userRole === 'user') {
+//       return res.status(400).json({ error: 'No se pueden eliminar usuarios normales' })
+//     }
+
+//     if (userRole === 'admin') {
+//       // Contar cuántos admins hay
+//       const [adminCountRows] = await pool.query('SELECT COUNT(*) as count FROM users WHERE role = "admin"')
+//       const adminCount = adminCountRows[0].count
+//       if (adminCount <= 1) {
+//         return res.status(400).json({ error: 'No se puede eliminar el último administrador' })
+//       }
+//     }
+
+//     const [result] = await pool.query(
+//       'DELETE FROM users WHERE id = ?', [id]
+//     )
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ error: 'Usuario no encontrado' })
+//     }
+//     res.json({ message: 'Usuario eliminado' })
+//   } catch (err) {
+//     console.error('Error al eliminar usuario:', err)
+//     res.status(500).json({ error: 'Error al eliminar usuario' })
+//   }
+// })
 
 module.exports = router

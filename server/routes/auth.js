@@ -8,6 +8,8 @@ const router = express.Router()
 
 // ─── POST /api/auth/register ─────────────────────────────────────────────────
 router.post('/register', async (req, res) => {
+  return res.status(403).json({ error: 'El registro de usuarios está deshabilitado. Solo existe un perfil de administrador.' })
+  /*
   const { username, email, password, city_id } = req.body
 
   if (!username || !email || !password) {
@@ -75,6 +77,7 @@ router.post('/register', async (req, res) => {
     console.error('Error en register:', err)
     res.status(500).json({ error: 'Error al registrar usuario' })
   }
+  */
 })
 
 // ─── POST /api/auth/login ─────────────────────────────────────────────────────
