@@ -9,33 +9,27 @@ const LOGO_POSITIONS = {
   'center':       { top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bottom: 'auto', right: 'auto' },
 }
 
-const FORMAT_SIZES = {
-  '1:1':  { width: 540, height: 540 },
-  '9:16': { width: 380, height: 675 },
-  '16:9': { width: 720, height: 405 },
-}
+const SIZE = { width: 540, height: 540 }
 
 export default function PreviewCanvas() {
-  const { percentage, titleText, bodyText, city, background, logo, overlay, titleStyle, bodyStyle, cityStyle, format } = useEditorStore((s) => s.template)
+  const { percentage, titleText, bodyText, city, background, logo, overlay, titleStyle, bodyStyle, cityStyle } = useEditorStore((s) => s.template)
 
-  const size    = FORMAT_SIZES[format] || FORMAT_SIZES['1:1']
   const logoPos = LOGO_POSITIONS[logo.position] || LOGO_POSITIONS['bottom-right']
 
   return (
     <div id="preview-canvas" style={{
       position:        'relative',
-      width:           size.width,
-      height:          size.height,
+      width:           SIZE.width,
+      height:          SIZE.height,
       borderRadius:    8,
       overflow:        'hidden',
       boxShadow:       'var(--shadow-md)',
-      backgroundColor: '#1a1a1a',
       flexShrink:      0,
     }}>
       {/* Imagen de fondo */}
       {background && (
         <img src={background} alt="fondo" style={{
-          position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
+          position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain',
         }} />
       )}
 
@@ -51,15 +45,21 @@ export default function PreviewCanvas() {
 
       {/* Contenido de texto */}
       <div style={{ position: 'absolute', inset: 0, padding: 32, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <p style={{ ...titleStyle, marginBottom: 16, lineHeight: 1.1, fontSize: titleStyle.fontSize * 1.5 }}>
-          {percentage}%
-        </p>
-        <p style={{ ...titleStyle, marginBottom: 20, lineHeight: 1.3, textTransform: 'uppercase' }}>
-          {titleText}
-        </p>
-        <p style={{ ...bodyStyle, lineHeight: 1.6 }}>
-          {bodyText}
-        </p>
+        {percentage && (
+          <p style={{ ...titleStyle, marginBottom: 16, lineHeight: 1.1, fontSize: titleStyle.fontSize * 1.5 }}>
+            {percentage}%
+          </p>
+        )}
+        {titleText && (
+          <p style={{ ...titleStyle, marginBottom: 20, lineHeight: 1.3, textTransform: 'uppercase' }}>
+            {titleText}
+          </p>
+        )}
+        {bodyText && (
+          <p style={{ ...bodyStyle, lineHeight: 1.6 }}>
+            {bodyText}
+          </p>
+        )}
         {city && (
           <p style={{ ...cityStyle, marginTop: 20, opacity: 0.9 }}>
             {city}

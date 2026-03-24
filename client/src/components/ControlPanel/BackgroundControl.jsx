@@ -46,7 +46,7 @@ export default function BackgroundControl() {
 }
 
 const styles = {
-  dropzone: { border: '2px dashed', borderRadius: 8, padding: 20, textAlign: 'center', cursor: 'pointer', transition: 'all .2s', minHeight: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  dropzone: { border: '2px dashed', borderRadius: 8, padding: 20, textAlign: 'center', cursor: 'pointer', transition: 'all .2s', minHeight: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' },
   hint:     { fontSize: 13, color: 'var(--gray-500)', lineHeight: 1.5 },
-  preview:  { width: '100%', maxHeight: 120, objectFit: 'cover', borderRadius: 6 },
+  preview:  { width: '100%', maxHeight: "100%", objectFit: 'cover', borderRadius: 6 },
 }

@@ -1,13 +1,14 @@
 import { create } from "zustand";
+import img1 from '../assets/imgs/img_1.png'
 
 const DEFAULT = {
-    percentaje: '[X]',
-    titleText : 'Felicidades a ',
-    bodyText  : 'Felicidades a la ciudad por ser una Ciudad Árbol del Mundo',
+    percentaje: '',
+    titleText : '',
+    bodyText  : '',
     city      : '',
-    background: null,
+    background: img1,
     logo      : { src: null, position: 'bottom-right', size: 120 },
-    overlay   : { color: '#000000', opacity: 0.3 },
+    overlay   : { },
     titleStyle: { color: '#ffffff', fontsize: 32, fontWeight: '800'},
     bodyStyle : { color: '#ffffff', fontsize: 18, fontWeight: '400' }, 
     bodyStyle : { color: '#ffffff', fontsize: 22, fontWeight: '700' },
